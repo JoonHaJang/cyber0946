@@ -2,27 +2,27 @@
 #include <stdlib.h>
 #include <windows.h>
 #define MAXSIZE 1000
-//------»ç¿ëÇÒ ÀÚ·á ±¸Á¶ ¼±¾ð-------------------------------------- 
+//------ì‚¬ìš©í•  ìžë£Œ êµ¬ì¡° ì„ ì–¸-------------------------------------- 
 typedef struct _process {
 	int pro_num, cpu_time, arr_t, pri, wait_t, ta_t, rem_t;
 }
 process;
-	// ÇÁ·Î¼¼½º ½Äº°¹øÈ£
-	// ÇÁ·Î¼¼½º°¡ CPU¸¦ »ç¿ëÇÑ ½Ã°£
-	// ÇÁ·Î¼¼½º ¿ì¼±¼øÀ§
-	//ÇÁ·Î¼¼½º ´ë±â½Ã°£
-	//ÇÁ·Î¼¼½º ÀüÃ¼ ½Ã°£ , WT+BT
-	//³²Àº µ¿ÀÛ ½Ã°£
+	// í”„ë¡œì„¸ìŠ¤ ì‹ë³„ë²ˆí˜¸
+	// í”„ë¡œì„¸ìŠ¤ê°€ CPUë¥¼ ì‚¬ìš©í•œ ì‹œê°„
+	// í”„ë¡œì„¸ìŠ¤ ìš°ì„ ìˆœìœ„
+	//í”„ë¡œì„¸ìŠ¤ ëŒ€ê¸°ì‹œê°„
+	//í”„ë¡œì„¸ìŠ¤ ì „ì²´ ì‹œê°„ , WT+BT
+	//ë‚¨ì€ ë™ìž‘ ì‹œê°„
 
-//------------½ºÄÉÁÙ¸µ ¾Ë°í¸®Áò ÇÔ¼ö--------------------------------
+//------------ìŠ¤ì¼€ì¤„ë§ ì•Œê³ ë¦¬ì¦˜ í•¨ìˆ˜--------------------------------
 int process_fcfs(process *pro, int n);
 int process_srt(process *pro, int n);
 int process_pri(process *pro, int n);
 int process_rr(processs *pro, int n, int Q);
-// ¶ó¿îµå ·ÎºóÀº Å¸ÀÓ ÄöÅÒµµ °°ÀÌ ¸Å°³º¯¼ö·Î ¹Þ´Â´Ù. 
+// ë¼ìš´ë“œ ë¡œë¹ˆì€ íƒ€ìž„ í€€í…€ë„ ê°™ì´ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ëŠ”ë‹¤. 
 int process_sjf(process *pro, int n);
 int process_generate(process *pro, int n);
-// -----------ÇÁ·Î¼¼½º¸¦ Á¤·Ä ÇÔ¼ö --------------------------------- 
+// -----------í”„ë¡œì„¸ìŠ¤ë¥¼ ì •ë ¬ í•¨ìˆ˜ --------------------------------- 
 void at_sort(process *pro, int n);
 void resort(process *pro, int n);
 
@@ -37,7 +37,7 @@ int main() {
 	FILE *fp;
 	fp=fopen("proc.txt","r");
 	process ready_queue[MAXSIZE];
-	printf("ÆÄÀÏÀÐ±â ½ÃÀÛ\n");
+	printf("íŒŒì¼ì½ê¸° ì‹œìž‘\n");
 	while(!feof(fp)) {
 		fscanf(fp, "%d", &ready_queue[i].pro_num);
 		fscanf(fp, "%d", &ready_queue[i].cpu_time);
@@ -49,13 +49,13 @@ int main() {
 		i++;
 	}
 	fclose(fp);
-	printf("ÆÄÀÏÀÐ±â ³¡\n");
+	printf("íŒŒì¼ì½ê¸° ë\n");
 	n=index-1;
 	printf("%d\n",n);
 	printf("\n=================Main Menu====================\n\n1. Read processes from proc.txt\n2. Generate random processes\n3. First come first Serve (FCFS)\n4. Shortest Job First (SJF)\n5. Shortest Remaining time First (SRTF)\n6. Priority\n7. Round Robin (RR)\n8. Exit\n==============================================\n");
 	while(1){
 			 int ch = 0;
-			 printf("¸Þ´º¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä.\n"); 
+			 printf("ë©”ë‰´ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”.\n"); 
 			 scanf("%d", &ch);	 
 			 float tat=0.0;
 			 switch(ch){
@@ -71,7 +71,7 @@ int main() {
                              case 2:
                                   printf("2. Generate random processes\n");
                                   process_generate(ready_queue, n);
-                                  printf("\n\n==================»ý¼º¿Ï·á===================\n");
+                                  printf("\n\n==================ìƒì„±ì™„ë£Œ===================\n");
                                   n++;
                                   continue;
                                   break;
@@ -137,7 +137,7 @@ int main() {
 		                        continue;
 		                        break;
                             case 7:		//RR
-                                 printf("ÄöÅÒ ÀÔ·Â\n");
+                                 printf("í€€í…€ ìž…ë ¥\n");
                                  scanf("%d",&Q);
                                  at_sort(ready_queue, n);
                                  process_rr(ready_queue, n, Q);
@@ -164,18 +164,18 @@ int main() {
 	
 	
 void at_sort(process *pro, int n) {
-// arival time ¼øÀ¸·Î ÇÁ·Î¼¼½º¸¦ Á¤·Ä ½ÃÄÑ ÁØ´Ù.  
+// arival time ìˆœìœ¼ë¡œ í”„ë¡œì„¸ìŠ¤ë¥¼ ì •ë ¬ ì‹œì¼œ ì¤€ë‹¤.  
 	process temp;
 	int i,j;
 	for (i=n-1; i>0;i--) {
 		for (j=0;j<i;j++) {
-			// i °¡ n-1ºÎÅÍ ½ÃÀÛÇØ¼­ 0 ºÎÅÍ n ±îÁö process¸¦ ºñ±³ÇÏ°í, ±×´ÙÀ½  i°¡ n-2 °¡ µÇ¸é ¸Ç ¾Õ¿¡²¬ µÎ°í ±× ´ÙÀ½ ºÎÅÍ ¸¶Áö¸·±îÁö ºñ±³ ÇÑ´Ù.  
+			// i ê°€ n-1ë¶€í„° ì‹œìž‘í•´ì„œ 0 ë¶€í„° n ê¹Œì§€ processë¥¼ ë¹„êµí•˜ê³ , ê·¸ë‹¤ìŒ  iê°€ n-2 ê°€ ë˜ë©´ ë§¨ ì•žì—ê»„ ë‘ê³  ê·¸ ë‹¤ìŒ ë¶€í„° ë§ˆì§€ë§‰ê¹Œì§€ ë¹„êµ í•œë‹¤.  
 			if(pro[j].arr_t>pro[j+1].arr_t) {
 				temp=pro[j+1];
 				pro[j+1]=pro[j];
 				pro[j]=temp;
 			} else if(pro[j].arr_t==pro[j+1].arr_t&&pro[j].pro_num>pro[j+1].pro_num) {
-				//µ¿½Ã¿¡ ¿ÔÀ¸¸é ÇÁ·Î¼¼½º ¹øÈ£ ¼øÀ¸·Î Á¤·ÄÇÑ´Ù. ÀÛÀº ¹øÈ£°¡ ¸ÕÀú ³ª¿Â´Ù.  
+				//ë™ì‹œì— ì™”ìœ¼ë©´ í”„ë¡œì„¸ìŠ¤ ë²ˆí˜¸ ìˆœìœ¼ë¡œ ì •ë ¬í•œë‹¤. ìž‘ì€ ë²ˆí˜¸ê°€ ë¨¼ì € ë‚˜ì˜¨ë‹¤.  
 				temp=pro[j+1];
 				pro[j+1]=pro[j];
 				pro[j]=temp;
@@ -185,9 +185,9 @@ void at_sort(process *pro, int n) {
 }
 
 void resort(process *pro, int n) {
-//ÇÁ·Î¼¼½º ±¸Á¶Ã¼
-// i °¡ n-1ºÎÅÍ ½ÃÀÛÇØ¼­ 0 ºÎÅÍ n ±îÁö process¸¦ ºñ±³ÇÏ°í, ±×´ÙÀ½  i°¡ n-2 °¡ µÇ¸é ¸Ç ¾Õ¿¡²¬ µÎ°í ±× ´ÙÀ½ ºÎÅÍ ¸¶Áö¸·±îÁö ºñ±³ ÇÑ´Ù.  
-//µµÂøÇÑ ¼ø¼­´ë·Î Á¤·ÄµÈ ÇÁ·Î¼¼½º ±¸Á¶Ã¼¸¦ °¡Á®¿Í¼­ CPU_time°ú ´ë±â½Ã°£ WT¸¦ ´õÇØ ÁØ´Ù. 
+//í”„ë¡œì„¸ìŠ¤ êµ¬ì¡°ì²´
+// i ê°€ n-1ë¶€í„° ì‹œìž‘í•´ì„œ 0 ë¶€í„° n ê¹Œì§€ processë¥¼ ë¹„êµí•˜ê³ , ê·¸ë‹¤ìŒ  iê°€ n-2 ê°€ ë˜ë©´ ë§¨ ì•žì—ê»„ ë‘ê³  ê·¸ ë‹¤ìŒ ë¶€í„° ë§ˆì§€ë§‰ê¹Œì§€ ë¹„êµ í•œë‹¤.  
+//ë„ì°©í•œ ìˆœì„œëŒ€ë¡œ ì •ë ¬ëœ í”„ë¡œì„¸ìŠ¤ êµ¬ì¡°ì²´ë¥¼ ê°€ì ¸ì™€ì„œ CPU_timeê³¼ ëŒ€ê¸°ì‹œê°„ WTë¥¼ ë”í•´ ì¤€ë‹¤. 
 	process temp;
 	int i,j;
 	for (i=n-1; i>0;i--) {
@@ -202,18 +202,18 @@ void resort(process *pro, int n) {
 }
 
 int process_fcfs(process *pro, int n) {
-//i´Â 0ºÎÅÍ,1, 2, 3, 4, 5, n-1 ±îÁö 
-// j´Â i°ª¿¡ µû¶ó¼­(i,j)·Î Ç¥Çö ÇÏ¸é 
+//iëŠ” 0ë¶€í„°,1, 2, 3, 4, 5, n-1 ê¹Œì§€ 
+// jëŠ” iê°’ì— ë”°ë¼ì„œ(i,j)ë¡œ í‘œí˜„ í•˜ë©´ 
 // (0,0) (1,0) (2,(0,1)), (3,(0,1,2)),
-//...(n-1, (0,1,2,3,..,n-2))ÀÌ·±½ÄÀ¸·Î
-//processÀÇ cpu_timeÀ» temp¿¡ ´©ÀûÇÑ´Ù. 
-//¸¸¾à Ã¹¹øÂ° °Í¸¸ µµÂøÇßÀ¸¸é, Ã¹¹øÂ° ÇÁ·Î¼¼½ºÀÇ cpu_time
-//±× µÚ·Î  
-// ´ë±â½Ã°£Àº = ÀüÃ¼ CPU »ç¿ë ½Ã°£¿¡¼­, k°¡ ¸ÕÀú ¿ÔÀ¸´Ï±î,
-// i°¡ µµÂøÇÑ ½Ã°£À» •û°í, °Å±â¿¡ kÀÇ µµÂø½Ã°£À» ´õÇÏ¸é, ±â´Ù¸° ½Ã°£ÀÌ´Ù. 
-// ´ë±â ½Ã°£ÀÌ ¾ø´Â °æ¿ì ¹Ù·Î ¼öÇàÇÏ±â ¶§¹®¿¡ 
-// ³²Àº µ¿ÀÛ ½Ã°£À» ¸Å½Ã°£ °è»êÇÏ¿© °¡Àå ÂªÀº ³²Àº µ¿ÀÛÀ» °¡Áø ÇÁ·Î¼¼½º ¸ÕÀú ÇÏ¸ç, 
-//¼±Á¡ ÇüÀ¸·Î µ¿ ÀÛ
+//...(n-1, (0,1,2,3,..,n-2))ì´ëŸ°ì‹ìœ¼ë¡œ
+//processì˜ cpu_timeì„ tempì— ëˆ„ì í•œë‹¤. 
+//ë§Œì•½ ì²«ë²ˆì§¸ ê²ƒë§Œ ë„ì°©í–ˆìœ¼ë©´, ì²«ë²ˆì§¸ í”„ë¡œì„¸ìŠ¤ì˜ cpu_time
+//ê·¸ ë’¤ë¡œ  
+// ëŒ€ê¸°ì‹œê°„ì€ = ì „ì²´ CPU ì‚¬ìš© ì‹œê°„ì—ì„œ, kê°€ ë¨¼ì € ì™”ìœ¼ë‹ˆê¹Œ,
+// iê°€ ë„ì°©í•œ ì‹œê°„ì„ Â•é¦¨, ê±°ê¸°ì— kì˜ ë„ì°©ì‹œê°„ì„ ë”í•˜ë©´, ê¸°ë‹¤ë¦° ì‹œê°„ì´ë‹¤. 
+// ëŒ€ê¸° ì‹œê°„ì´ ì—†ëŠ” ê²½ìš° ë°”ë¡œ ìˆ˜í–‰í•˜ê¸° ë•Œë¬¸ì— 
+// ë‚¨ì€ ë™ìž‘ ì‹œê°„ì„ ë§¤ì‹œê°„ ê³„ì‚°í•˜ì—¬ ê°€ìž¥ ì§§ì€ ë‚¨ì€ ë™ìž‘ì„ ê°€ì§„ í”„ë¡œì„¸ìŠ¤ ë¨¼ì € í•˜ë©°, 
+//ì„ ì  í˜•ìœ¼ë¡œ ë™ ìž‘
 	int temp;
 	int wt=0;
 	int i,j,k=0;
@@ -234,25 +234,25 @@ int process_fcfs(process *pro, int n) {
 	}
 }
 int process_srt(process *pro, int n) {
-//³²Àº ÇÁ·Î¼¼½º ¼ö
-// ÇöÀç ½Ã°£
-// for¹®¿¡¼­ ¼±ÅÃ µÇ´Â ÇöÀç processÀÇ µµÂø ½Ã°£ÀÌ now°°°Å³ª ÀÛ°í
-// i°¡ nº¸´Ù ÀÛÀ» ¶§ ±îÂî, Áõ°¨½ÃÅ°¸é¼­ 
-//ÇØ´ç ÇÁ·Î¼¼½ºÀÇ ³²Àº ½Ã°£ÀÌ ÃÖ¼Ò°ª º¸´Ù ÀÛ°í, ¾ç¼öÀÌ¸é 
-// Áö±Ý ½ÇÇàÇÒ ÇÁ·Î¼¼½º¸¦ i·Î Àâ´Â´Ù.  
-//±×¸®°í ÇöÀç ÇÁ·Î¼¼½ºÀÇ ³²Àº ½Ã°£À» ÃÖ¼Ò °ªÀ¸·Î Àâ´Ï´Ù. 
-// ¹Ýº¹¹®À» µ¹¸é¼­ ÀÌ °ªÀº ÃÖ¼Ò°ªÀÌ µÈ´Ù.  
-// ³²Àº ½Ã°£°ªÀÌ ÇöÀç now_pº¸´Ù ÀÛÁö ¾ÊÀ» ¶§,  
-//½Ã°£À» Áõ°¡½ÃÅ²´Ù. 
-//temp[0]ÀÇ °ªÀÌ process[0] cpu_time ½Ã°£°ú ´Ù ¶§,  
-// temp¿¡´Ù°¡ n°³ ¸¸Å­ÀÇ ³²Àº ½Ã°£À» Ã¤¿ö ³Ö´Â´Ù.  
-// ½Ã°£ÀÌ Áö³¯ ¼ö·Ï ÇöÀç »ç¿ëÇÏ°í ÀÖ´Â ÇÁ·Î¼¼½ºÀÇ 
-// ³²Àº µ¿ÀÛ ½Ã°£ Ä«¿îÆ®¸¦ °¨¼Ò ½ÃÅ²´Ù.  
-// ³²Àº µ¿ÀÛ½Ã°£ÀÌ 0ÀÏ ¶§ »õ·Î¿î ÇÁ·Î¼¼½º¸¦ Àç¼±ÅÃ ÇÏ´Â °úÁ¤
-// ³²Àº ÇÁ·Î¼¼½º¸¦ °¨¼Ò½ÃÄÑÁØ´Ù.  
-// ½ºÄÉÁÙ¸µ ¿Ï·áÇÑ °ªÀÌ temp¿¡ °¢°¢ÀÇ index¿¡ ´ã°Ü ÀÖ¾ú´Âµ¥ ÀÌ¸¦ ´Ù½Ã 
-//processÀÇ remain_t¿¡´Ù ÀúÀåÇØ ÁØ´Ù.  
-// ¿ì¼±¼øÀ§´ë·Î ½ºÄÉÁì¸µ ÀÛÀ» ¼ö·Ï ¿ì¼±¼øÀ§ ³ôÀº°Å 
+//ë‚¨ì€ í”„ë¡œì„¸ìŠ¤ ìˆ˜
+// í˜„ìž¬ ì‹œê°„
+// forë¬¸ì—ì„œ ì„ íƒ ë˜ëŠ” í˜„ìž¬ processì˜ ë„ì°© ì‹œê°„ì´ nowê°™ê±°ë‚˜ ìž‘ê³ 
+// iê°€ në³´ë‹¤ ìž‘ì„ ë•Œ ê¹Œì°Œ, ì¦ê°ì‹œí‚¤ë©´ì„œ 
+//í•´ë‹¹ í”„ë¡œì„¸ìŠ¤ì˜ ë‚¨ì€ ì‹œê°„ì´ ìµœì†Œê°’ ë³´ë‹¤ ìž‘ê³ , ì–‘ìˆ˜ì´ë©´ 
+// ì§€ê¸ˆ ì‹¤í–‰í•  í”„ë¡œì„¸ìŠ¤ë¥¼ ië¡œ ìž¡ëŠ”ë‹¤.  
+//ê·¸ë¦¬ê³  í˜„ìž¬ í”„ë¡œì„¸ìŠ¤ì˜ ë‚¨ì€ ì‹œê°„ì„ ìµœì†Œ ê°’ìœ¼ë¡œ ìž¡ë‹ˆë‹¤. 
+// ë°˜ë³µë¬¸ì„ ëŒë©´ì„œ ì´ ê°’ì€ ìµœì†Œê°’ì´ ëœë‹¤.  
+// ë‚¨ì€ ì‹œê°„ê°’ì´ í˜„ìž¬ now_pë³´ë‹¤ ìž‘ì§€ ì•Šì„ ë•Œ,  
+//ì‹œê°„ì„ ì¦ê°€ì‹œí‚¨ë‹¤. 
+//temp[0]ì˜ ê°’ì´ process[0] cpu_time ì‹œê°„ê³¼ ë‹¤ ë•Œ,  
+// tempì—ë‹¤ê°€ nê°œ ë§Œí¼ì˜ ë‚¨ì€ ì‹œê°„ì„ ì±„ì›Œ ë„£ëŠ”ë‹¤.  
+// ì‹œê°„ì´ ì§€ë‚  ìˆ˜ë¡ í˜„ìž¬ ì‚¬ìš©í•˜ê³  ìžˆëŠ” í”„ë¡œì„¸ìŠ¤ì˜ 
+// ë‚¨ì€ ë™ìž‘ ì‹œê°„ ì¹´ìš´íŠ¸ë¥¼ ê°ì†Œ ì‹œí‚¨ë‹¤.  
+// ë‚¨ì€ ë™ìž‘ì‹œê°„ì´ 0ì¼ ë•Œ ìƒˆë¡œìš´ í”„ë¡œì„¸ìŠ¤ë¥¼ ìž¬ì„ íƒ í•˜ëŠ” ê³¼ì •
+// ë‚¨ì€ í”„ë¡œì„¸ìŠ¤ë¥¼ ê°ì†Œì‹œì¼œì¤€ë‹¤.  
+// ìŠ¤ì¼€ì¤„ë§ ì™„ë£Œí•œ ê°’ì´ tempì— ê°ê°ì˜ indexì— ë‹´ê²¨ ìžˆì—ˆëŠ”ë° ì´ë¥¼ ë‹¤ì‹œ 
+//processì˜ remain_tì—ë‹¤ ì €ìž¥í•´ ì¤€ë‹¤.  
+// ìš°ì„ ìˆœìœ„ëŒ€ë¡œ ìŠ¤ì¼€ì¥´ë§ ìž‘ì„ ìˆ˜ë¡ ìš°ì„ ìˆœìœ„ ë†’ì€ê±° 
 	int remain, min, now_p, i, temp[150];
 	int now, wt=0;
 	remain=n;
@@ -284,17 +284,17 @@ int process_srt(process *pro, int n) {
 	}
 }
 int process_pri(process *pro, int n) {
-// ¿ì¼± ³²Àº ½Ã°£À» ´Ù ÇØ´ç processÀÇ cpu_timeÀ¸·Î Ã¤¿öÁØ´Ù. 
-//ÇöÀç ½Ã°£À» process[0]ÀÌ µµÂøÇÑ ½Ã°£À¸·Î Àâ´Â´Ù.  
-//³²Àº ÇÁ·Î¼¼½º ÀÇ ¼ö 
-// temp¿¡´Ù processµéÀÇ ³²Àº ½Ã°£À» Ã¤¿öÁØ´Ù. 
-// »õ·Î µé¾î¿À´Â ¾Öµé·Î ºÎÅÍ
-//³¡³­ ÇÁ·Î¼¼½º°¡ ¾Æ´Ñµ¥ ÇöÀç minº¸´Ù ¿ì¼±¼øÀ§°ªÀÌ ÀÛÀº ÇÁ·Î¼¼½º¸é 
-//±× ÇÁ·Î¼¼½º ¹øÈ£°¡ numÀÌ µÇ°í  
-// ±× ÇÁ·Î¼¼½ºÀÇ ¿ì¼±¼øÀ§°¡ ÃÖ¼Ò °ªÀÌ µÇ¸ç 
-//flag¸¦ 1·Î ¹Ù²ãÁØ´Ù. 
-//½Ã°£À» Áõ°¡ ½ÃÅ²´Ù.  
-//pro[num]À» ´Ù ¼öÇàÇÏ°í ½Ã°£¿¡´Ù°¡ Ãß°¡ÇØÁÖ´Â °ÍÀÌ´Ù.
+// ìš°ì„  ë‚¨ì€ ì‹œê°„ì„ ë‹¤ í•´ë‹¹ processì˜ cpu_timeìœ¼ë¡œ ì±„ì›Œì¤€ë‹¤. 
+//í˜„ìž¬ ì‹œê°„ì„ process[0]ì´ ë„ì°©í•œ ì‹œê°„ìœ¼ë¡œ ìž¡ëŠ”ë‹¤.  
+//ë‚¨ì€ í”„ë¡œì„¸ìŠ¤ ì˜ ìˆ˜ 
+// tempì—ë‹¤ processë“¤ì˜ ë‚¨ì€ ì‹œê°„ì„ ì±„ì›Œì¤€ë‹¤. 
+// ìƒˆë¡œ ë“¤ì–´ì˜¤ëŠ” ì• ë“¤ë¡œ ë¶€í„°
+//ëë‚œ í”„ë¡œì„¸ìŠ¤ê°€ ì•„ë‹Œë° í˜„ìž¬ minë³´ë‹¤ ìš°ì„ ìˆœìœ„ê°’ì´ ìž‘ì€ í”„ë¡œì„¸ìŠ¤ë©´ 
+//ê·¸ í”„ë¡œì„¸ìŠ¤ ë²ˆí˜¸ê°€ numì´ ë˜ê³   
+// ê·¸ í”„ë¡œì„¸ìŠ¤ì˜ ìš°ì„ ìˆœìœ„ê°€ ìµœì†Œ ê°’ì´ ë˜ë©° 
+//flagë¥¼ 1ë¡œ ë°”ê¿”ì¤€ë‹¤. 
+//ì‹œê°„ì„ ì¦ê°€ ì‹œí‚¨ë‹¤.  
+//pro[num]ì„ ë‹¤ ìˆ˜í–‰í•˜ê³  ì‹œê°„ì—ë‹¤ê°€ ì¶”ê°€í•´ì£¼ëŠ” ê²ƒì´ë‹¤.
 	int flag = 0;
 	int i,time,remain,num, min, temp[150];
 	for (i=0; i<n; i++) {
@@ -373,30 +373,30 @@ int process_sjf(process *pro, int n) {
 	}
 }
 int process_rr(process *pro, int n, int Q) {
-// temp¿¡´Ù °ªÀúÀå temp2¿¡´Ù´Â processµéÀÇ Æ¯Á¤ °ª ÀúÀå 
-//int i , count ±×¸®°í totaltime 
-//ÃÊ±âÈ­ ÀýÂ÷ 
-// processµéÀÇ ³²Àº ½Ã°£À» temp2 ¹è¿­¿¡ ³Ö¾îÁØ´Ù. 
-//¹«ÇÑ ·çÇÁ 
-// ÇöÀç ÀÓ½Ã °ªÀº quantom 
-// ¸¸¾à process iÀÇ ³²Àº ½Ã°£ÀÌ ¾ø´Ù¸é,  
-// count¸¦ Áõ°¡ ½ÃÅ°°í,  
-//i¸¦ Áõ°¡ ½ÃÄÑ ´Ù¸¥ process·Î °£´Ù.  
-// ¸¸¾à ³²Àº ½Ã°£ÀÌ ÄöÅÒº¸´Ù Å©´Ù¸é, ±× °ªÀ» »©ÁØ´ÙÀ½ ´Ù½Ã ÀúÀå 
-// ³²Àº½Ã°£ÀÌ 0ÀÌ°Å³ª ÄöÅÒº¸´Ù Å©´Ù¸é, 
-// temp¿¡´Ù°¡ ³²Àº ½Ã°£ ÀúÀåÇØÁÖ°í,
-// ½ÇÇàÇßÀ¸´Ï±î, pro[i].remain_t´Â 0À¸·Î 
-// ÀüÃ¼ ½Ã°£Àº ¼öÇàÇÑ ½Ã°£, ¿Ö³ÄÇÏ¸é À§¿¡¼­
-//ÄöÅÒº¸´Ù ÀÛÀ» ¶§, ±× °ªÀ» total time¿¡ ³Ö¾î ÁÖ¾ú´Ù.
-//process[i]ÀÇ ÀüÃ¼ ½Ã°£Àº tt
-// ´Ù µ¹¾ÒÀ» ¶§,
-//while¹® ¿©±â ±îÁö
-// ÀÌÁ¦ ±×µ¿¾È temp¿¡ ¸ð¾Ò´ø°Å reamin_t·Î ³Ö¾îÁØ´Ù. 
-// wait ½Ã°£Àº ÀüÃ¼ ½Ã°£ - cpu½Ã°£
+// tempì—ë‹¤ ê°’ì €ìž¥ temp2ì—ë‹¤ëŠ” processë“¤ì˜ íŠ¹ì • ê°’ ì €ìž¥ 
+//int i , count ê·¸ë¦¬ê³  totaltime 
+//ì´ˆê¸°í™” ì ˆì°¨ 
+// processë“¤ì˜ ë‚¨ì€ ì‹œê°„ì„ temp2 ë°°ì—´ì— ë„£ì–´ì¤€ë‹¤. 
+//ë¬´í•œ ë£¨í”„ 
+// í˜„ìž¬ ìž„ì‹œ ê°’ì€ quantom 
+// ë§Œì•½ process iì˜ ë‚¨ì€ ì‹œê°„ì´ ì—†ë‹¤ë©´,  
+// countë¥¼ ì¦ê°€ ì‹œí‚¤ê³ ,  
+//ië¥¼ ì¦ê°€ ì‹œì¼œ ë‹¤ë¥¸ processë¡œ ê°„ë‹¤.  
+// ë§Œì•½ ë‚¨ì€ ì‹œê°„ì´ í€€í…€ë³´ë‹¤ í¬ë‹¤ë©´, ê·¸ ê°’ì„ ë¹¼ì¤€ë‹¤ìŒ ë‹¤ì‹œ ì €ìž¥ 
+// ë‚¨ì€ì‹œê°„ì´ 0ì´ê±°ë‚˜ í€€í…€ë³´ë‹¤ í¬ë‹¤ë©´, 
+// tempì—ë‹¤ê°€ ë‚¨ì€ ì‹œê°„ ì €ìž¥í•´ì£¼ê³ ,
+// ì‹¤í–‰í–ˆìœ¼ë‹ˆê¹Œ, pro[i].remain_tëŠ” 0ìœ¼ë¡œ 
+// ì „ì²´ ì‹œê°„ì€ ìˆ˜í–‰í•œ ì‹œê°„, ì™œëƒí•˜ë©´ ìœ„ì—ì„œ
+//í€€í…€ë³´ë‹¤ ìž‘ì„ ë•Œ, ê·¸ ê°’ì„ total timeì— ë„£ì–´ ì£¼ì—ˆë‹¤.
+//process[i]ì˜ ì „ì²´ ì‹œê°„ì€ tt
+// ë‹¤ ëŒì•˜ì„ ë•Œ,
+//whileë¬¸ ì—¬ê¸° ê¹Œì§€
+// ì´ì œ ê·¸ë™ì•ˆ tempì— ëª¨ì•˜ë˜ê±° reamin_të¡œ ë„£ì–´ì¤€ë‹¤. 
+// wait ì‹œê°„ì€ ì „ì²´ ì‹œê°„ - cpuì‹œê°„
 	int temp, temp2[150];
 	int i, count;
 	int tt =0;
-	//tt¿¡ ¾²·¹±â °ªÀÌ µé¾î°¡¸é ¾ÊµÈ´Ù. 
+	//ttì— ì“°ë ˆê¸° ê°’ì´ ë“¤ì–´ê°€ë©´ ì•Šëœë‹¤. 
 	if(temp2[0] !=pro[0].cpu_time) {
 		for (i=0; i<n; i++) {
 			temp2[i]=pro[i].rem_t;
@@ -426,12 +426,12 @@ int process_rr(process *pro, int n, int Q) {
 	}
 }
 int process_generate(process *pro, int n) {
-	// ·£´ý ÇÁ·Î¼¼½º »ý¼º,  
+	// ëžœë¤ í”„ë¡œì„¸ìŠ¤ ìƒì„±,  
 	FILE *fp2;
 	int j, found;
 	fp2=fopen("proc.txt","a+");
 	int i=n;
-	//ÇÁ·Î¼¼½º °³¼ö, ÇöÀç ¸¶Áö¸· ÇÁ·Î¼¼½º°¡ ¸î°³ÀÎÁö ÆÄ¾ÇÇÏ´Â µ¥ »ç¿ëµÈ´Ù. 
+	//í”„ë¡œì„¸ìŠ¤ ê°œìˆ˜, í˜„ìž¬ ë§ˆì§€ë§‰ í”„ë¡œì„¸ìŠ¤ê°€ ëª‡ê°œì¸ì§€ íŒŒì•…í•˜ëŠ” ë° ì‚¬ìš©ëœë‹¤. 
 	int bt =(rand()%25)+1;
 	pro[i].pro_num=i+1;
 	pro[i].cpu_time=bt;
